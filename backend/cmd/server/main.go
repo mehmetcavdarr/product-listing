@@ -14,26 +14,28 @@ func main() {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowMethods: "GET,HEAD,OPTIONS",
-		AllowHeaders: "*",
+		AllowOrigins: "http://localhost:5173, https://product-listing-frontend.vercel.app",
+		AllowMethods: "GET,OPTIONS",
+		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
 	productsPath := "./data/products.json"
 	if v := os.Getenv("PRODUCTS_PATH"); v != "" {
 		productsPath = v
 	}
-	goldKey := os.Getenv("METALS_API_KEY")
 
 	internal.RegisterRoutes(app, internal.ServerDeps{
 		ProductsPath: productsPath,
-		GoldAPIKey:   goldKey,
 	})
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
-	log.Printf("listening on :%s", port)
+
+	log.Printf("🚀 Server running on port %s", port)
+	log.Printf("📦 Products file: %s", productsPath)
+	log.Printf("💰 Using GOLD_API_KEY from environment for live gold price")
+
 	log.Fatal(app.Listen(":" + port))
 }

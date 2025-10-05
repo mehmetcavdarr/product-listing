@@ -48,6 +48,7 @@ func ToDTOs(products []Product, goldPerGram float64) []ProductDTO {
 
 // Filters
 func FilterByPrice(items []ProductDTO, min, max *float64) []ProductDTO {
+	min, max = normalizeRangeFloat(min, max)
 	if min == nil && max == nil {
 		return items
 	}
@@ -63,17 +64,36 @@ func FilterByPrice(items []ProductDTO, min, max *float64) []ProductDTO {
 	}
 	return out
 }
+func normalizeRangeFloat(min, max *float64) (nmin, nmax *float64) {
+	if min == nil && max == nil {
+		return nil, nil
+	}
+	var a, b *float64
+	if min != nil {
+		v := *min
+		a = &v
+	}
+	if max != nil {
+		v := *max
+		b = &v
+	}
+	if a != nil && b != nil && *a > *b {
+		*a, *b = *b, *a
+	}
+	return a, b
+}
 
 func FilterByPopularity(items []ProductDTO, min, max *float64) []ProductDTO {
+	min, max = normalizeRangeFloat(min, max)
 	if min == nil && max == nil {
 		return items
 	}
 	out := make([]ProductDTO, 0, len(items))
 	for _, it := range items {
-		if min != nil && it.PopularityScore < *min {
+		if min != nil && it.Popularity5 < *min {
 			continue
 		}
-		if max != nil && it.PopularityScore > *max {
+		if max != nil && it.Popularity5 > *max {
 			continue
 		}
 		out = append(out, it)

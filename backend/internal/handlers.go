@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,15 +9,16 @@ import (
 
 type ServerDeps struct {
 	ProductsPath string
-	GoldAPIKey   string
 }
 
 func RegisterRoutes(app *fiber.App, deps ServerDeps) {
 	app.Get("/health", func(c *fiber.Ctx) error { return c.JSON(fiber.Map{"status": "ok"}) })
 
 	app.Get("/gold/spot", func(c *fiber.Ctx) error {
-		g, err := GetGoldPriceGram(deps.GoldAPIKey)
+		// Fonksiyon artık parametre almıyor.
+		g, err := GetGoldPriceGram()
 		if err != nil {
+			log.Printf("ALTIN FİYATI ALINIRKEN HATA OLUŞTU: %v", err)
 			return c.Status(502).JSON(fiber.Map{"error": err.Error()})
 		}
 		return c.JSON(fiber.Map{"goldPriceGram": g, "currency": "USD"})
@@ -27,13 +29,14 @@ func RegisterRoutes(app *fiber.App, deps ServerDeps) {
 		if err != nil {
 			return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 		}
-		g, err := GetGoldPriceGram(deps.GoldAPIKey)
+
+		g, err := GetGoldPriceGram()
 		if err != nil {
+			log.Printf("ALTIN FİYATI ALINIRKEN HATA OLUŞTU: %v", err)
 			return c.Status(502).JSON(fiber.Map{"error": err.Error()})
 		}
 		dtos := ToDTOs(prods, g)
 
-		// filters
 		var pmin, pmax, popmin, popmax *float64
 		if v := c.Query("priceMin"); v != "" {
 			if f, err := strconv.ParseFloat(v, 64); err == nil {
