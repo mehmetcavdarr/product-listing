@@ -14,7 +14,7 @@ func main() {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:5173, https://product-list-one-puce.vercel.app",
+		AllowOrigins: "https://product-listing-puce-alpha.vercel.app, http://localhost:5173",
 		AllowMethods: "GET,OPTIONS",
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
