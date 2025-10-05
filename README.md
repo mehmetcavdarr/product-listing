@@ -24,7 +24,7 @@ It displays dynamically priced jewelry products, fetched from a mock API that ca
 
 🚀 Fiber Web Framework
 
-🌍 Dynamic gold price fetch from TCMB API
+🌍 Dynamic gold price fetch from Truncgil v4 JSON (https://finans.truncgil.com/v4/today.json)
 
 💾 JSON-based mock database
 
