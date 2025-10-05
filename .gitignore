@@ -1,0 +1,22 @@
+# ---------- Node / Vite ----------
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ---------- Env ----------
+frontend/.env
+backend/.env
+
+# ---------- Go ----------
+backend/bin/
+backend/tmp/
+
+# ---------- Build & Logs ----------
+dist/
+*.log
+
+# ---------- OS / Editor ----------
+.DS_Store
+.idea/
+.vscode/
+*.swp
